@@ -1820,12 +1820,12 @@ local Tabs = {
 }
 
 local TabHandles = {
-    Aim = Tabs.Main:Tab({ Title = "Aim", Icon = "layout-grid" }),
-    Esp = Tabs.Main:Tab({ Title = "Visual", Icon = "layout-grid" }),
-    Player = Tabs.Main:Tab({ Title = "Player", Icon = "layout-grid" }),
+    Aim = Tabs.Main:Tab({ Title = "Aim", Icon = "anvil" }),
+    Esp = Tabs.Main:Tab({ Title = "Visual", Icon = "asterisk" }),
+    Player = Tabs.Main:Tab({ Title = "Player", Icon = "circle-user" }),
 
-    Scripts = Tabs.Another:Tab({ Title = "Scripts", Icon = "layout-grid" }),
-    Info = Tabs.Another:Tab({ Title = "Info", Icon = "layout-grid" }),
+    Scripts = Tabs.Another:Tab({ Title = "Scripts", Icon = "cloud-fog" }),
+    Info = Tabs.Another:Tab({ Title = "Info", Icon = "badge-info" }),
 
     Appearance = Tabs.Settings:Tab({ Title = "Appearance", Icon = "brush" }),
     Config = Tabs.Settings:Tab({ Title = "Config", Icon = "settings" }),
