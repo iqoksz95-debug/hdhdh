@@ -1,4 +1,4 @@
-local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/iqoksz95-debug/hdhdh/refs/heads/main/windui3.lua"))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/iqoksz95-debug/general/refs/heads/main/mainhub.lua"))()
 
 --------------------------------------------------------------------------------------------------------------------------------
 
@@ -1828,6 +1828,7 @@ local TabHandles = {
     Info = Tabs.Another:Tab({ Title = "Info", Icon = "layout-grid" }),
 
     Appearance = Tabs.Settings:Tab({ Title = "Appearance", Icon = "brush" }),
+    Config = Tabs.Settings:Tab({ Title = "Config", Icon = "settings" }),
 }
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -2459,7 +2460,7 @@ TabHandles.Info:Paragraph({
 
 TabHandles.Info:Code({
     Title = "my_code.luau",
-    Code = [[loadstring(game:HttpGet('https://raw.githubusercontent.com/iqoksz95-debug/hdhdh/refs/heads/main/main18181.lua'))()]],
+    Code = [[loadstring(game:HttpGet('https://raw.githubusercontent.com/iqoksz95-debug/hdhdh/refs/heads/main/mainfake18181.lua'))()]],
     OnCopy = function()
         WindUI:Notify({
             Title = "Script copied",
@@ -2469,6 +2470,118 @@ TabHandles.Info:Code({
     end
 })
 
+--------------------------------------------------------------------------------------------------------------------------------
+
+TabHandles.Config:Paragraph({
+    Title = "Configuration Manager",
+    Desc = "Save and load your settings",
+    Image = "save",
+    ImageSize = 20,
+    Color = "White"
+})
+
+TabHandles.Config:Divider()
+
+local configName = "default"
+local configFile = nil
+local MyPlayerData = {
+    name = "Player1",
+    level = 1,
+    inventory = { "sword", "shield", "potion" }
+}
+
+TabHandles.Config:Input({
+    Title = "Config Name",
+    Value = configName,
+    Callback = function(value)
+        configName = value or "default"
+    end
+})
+
+local ConfigManager = Window.ConfigManager
+if ConfigManager then
+    ConfigManager:Init(Window)
+    
+    TabHandles.Config:Button({
+        Title = "Save Config",
+        Icon = "save",
+        Variant = "Primary",
+        Callback = function()
+            configFile = ConfigManager:CreateConfig(configName)
+            
+            configFile:Register("featureToggle", featureToggle)
+            configFile:Register("intensitySlider", intensitySlider)
+            configFile:Register("testDropdown", testDropdown)
+            configFile:Register("themeDropdown", themeDropdown)
+            configFile:Register("transparencySlider", transparencySlider)
+            
+            configFile:Set("playerData", MyPlayerData)
+            configFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
+            
+            if configFile:Save() then
+                WindUI:Notify({ 
+                    Title = "Save Config", 
+                    Content = "Saved as: "..configName,
+                    Icon = "check",
+                    Duration = 3
+                })
+            else
+                WindUI:Notify({ 
+                    Title = "Error", 
+                    Content = "Failed to save config",
+                    Icon = "x",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    TabHandles.Config:Button({
+        Title = "Load Config",
+        Icon = "folder",
+        Callback = function()
+            configFile = ConfigManager:CreateConfig(configName)
+            local loadedData = configFile:Load()
+            
+            if loadedData then
+                if loadedData.playerData then
+                    MyPlayerData = loadedData.playerData
+                end
+                
+                local lastSave = loadedData.lastSave or "Unknown"
+                WindUI:Notify({ 
+                    Title = "Load Config", 
+                    Content = "Loaded: "..configName.."\nLast save: "..lastSave,
+                    Icon = "refresh-cw",
+                    Duration = 5
+                })
+                
+                TabHandles.Config:Paragraph({
+                    Title = "Player Data",
+                    Desc = string.format("Name: %s\nLevel: %d\nInventory: %s", 
+                        MyPlayerData.name, 
+                        MyPlayerData.level, 
+                        table.concat(MyPlayerData.inventory, ", "))
+                })
+            else
+                WindUI:Notify({ 
+                    Title = "Error", 
+                    Content = "Failed to load config",
+                    Icon = "x",
+                    Duration = 3
+                })
+            end
+        end
+    })
+else
+    TabHandles.Config:Paragraph({
+        Title = "Config Manager Not Available",
+        Desc = "This feature requires ConfigManager",
+        Image = "alert-triangle",
+        ImageSize = 20,
+        Color = "White"
+    })
+end
 --------------------------------------------------------------------------------------------------------------------------------
 
 TabHandles.Appearance:Paragraph({
